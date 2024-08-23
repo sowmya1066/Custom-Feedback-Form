@@ -1,7 +1,7 @@
 // src/components/Dashboard.js
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { db } from "../firebase";
+import { db } from "../firebaseConfig";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { Button, Card, CardContent, Typography } from "@mui/material";
 

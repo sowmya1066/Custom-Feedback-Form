@@ -1,7 +1,7 @@
 // src/components/FeedbackDetail.js
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { db } from "../firebase";
+import { db } from "../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { Typography, List, ListItem, ListItemText } from "@mui/material";
 
