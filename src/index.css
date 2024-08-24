@@ -25,3 +25,22 @@ code {
   flex: 1;
   padding: 20px;
 }
+
+.smiley-rating {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.smiley {
+  font-size: 30px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.smiley.selected {
+  background-color: blue;
+  color: white;
+}
