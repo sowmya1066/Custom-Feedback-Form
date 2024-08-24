@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import RatingReview from "./RatingReview";
 import NumericRating from "./NumericRating";
 import SmileyRating from "./SmileyRating";
-import RadioButtons from "./RadioButtons"; // Import the RadioButtons component
+import RadioButtons from "./RadioButtons";
+import Categories from "./Categories"; // Import the Categories component
 
 function FeedbackForm() {
   const [fields, setFields] = useState([]);
@@ -49,6 +50,13 @@ function FeedbackForm() {
               <RadioButtons />
             </div>
           );
+        case "categories":
+          return (
+            <div key={index}>
+              <label htmlFor={`categories-${index}`}>{field.label}</label>
+              <Categories />
+            </div>
+          );
         default:
           return null;
       }
@@ -80,6 +88,9 @@ function FeedbackForm() {
           onClick={() => handleAddField("radio-buttons", "Radio Buttons")}
         >
           Add Radio Buttons
+        </button>
+        <button onClick={() => handleAddField("categories", "Categories")}>
+          Add Categories
         </button>
       </div>
     );
