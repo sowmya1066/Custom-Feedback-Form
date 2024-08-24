@@ -1,50 +1,65 @@
-// src/components/FormField.js
-import React from "react";
-import {
-  TextField,
-  IconButton,
-  FormControlLabel,
-  Checkbox,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import React, { useState } from "react";
 
-function FormField({ field, onChange, onDelete }) {
-  const handleFieldChange = (key, value) => {
-    onChange({ ...field, [key]: value });
+function FeedbackForm() {
+  const [fields, setFields] = useState([]);
+
+  const handleAddField = (fieldType, label) => {
+    setFields([...fields, { type: fieldType, label }]);
+  };
+
+  const renderFields = () => {
+    return fields.map((field, index) => {
+      switch (field.type) {
+        case "textarea":
+          return (
+            <div key={index}>
+              <label htmlFor={`field-${index}`}>{field.label}</label>
+              <textarea id={`field-${index}`} />
+            </div>
+          );
+        case "numeric-rating":
+          return (
+            <div key={index}>
+              <label htmlFor={`numeric-rating-${index}`}>{field.label}</label>
+              <input
+                type="number"
+                id={`numeric-rating-${index}`}
+                min="1"
+                max="5"
+              />
+            </div>
+          );
+        // ... other field types
+        default:
+          return null;
+      }
+    });
+  };
+
+  const renderFieldOptions = () => {
+    return (
+      <div>
+        <button
+          onClick={() => handleAddField("textarea", "provide your comment")}
+        >
+          Add Textarea
+        </button>
+        <button
+          onClick={() => handleAddField("numeric-rating", "Numeric Rating")}
+        >
+          Add Numeric Rating
+        </button>
+        {/* Add buttons for other field types here */}
+      </div>
+    );
   };
 
   return (
-    <div style={{ marginBottom: "1rem" }}>
-      <TextField
-        label="Label"
-        value={field.label}
-        onChange={(e) => handleFieldChange("label", e.target.value)}
-        fullWidth
-        margin="normal"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={field.required}
-            onChange={(e) => handleFieldChange("required", e.target.checked)}
-          />
-        }
-        label="Required"
-      />
-      {field.required && (
-        <TextField
-          label="Error Message"
-          value={field.errorMessage}
-          onChange={(e) => handleFieldChange("errorMessage", e.target.value)}
-          fullWidth
-          margin="normal"
-        />
-      )}
-      <IconButton onClick={onDelete} color="secondary">
-        <DeleteIcon />
-      </IconButton>
+    <div className="feedback-form">
+      <div className="left-block">{renderFields()}</div>
+      <div className="right-block">{renderFieldOptions()}</div>
     </div>
   );
 }
 
-export default FormField;
+export default FeedbackForm;
