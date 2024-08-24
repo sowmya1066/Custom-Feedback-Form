@@ -6,16 +6,14 @@ import RatingReview from "./RatingReview";
 import SmileyRating from "./SmileyRating";
 import RadioButtons from "./RadioButtons";
 import Categories from "./Categories";
-import {
-  FaTrash,
-  FaEdit,
-  FaStar,
-  FaRegSmile,
-  FaVoteYea,
-  FaListUl,
-  FaRegComments,
-  FaPlus,
-} from "react-icons/fa"; // Importing icons from react-icons
+import CategoryIcon from "../assets/cate_icon.png";
+import InputIcon from "../assets/input_icon.png";
+import NumericalIcon from "../assets/numerical_icon.png";
+import RadioIcon from "../assets/radio_icon.png";
+import SmileyIcon from "../assets/smiley_icon.png";
+import StarIcon from "../assets/star_icon.png";
+import TextAreaIcon from "../assets/textarea_icon.png";
+import { FaTrash, FaEdit, FaPlus } from "react-icons/fa"; // Importing icons from react-icons
 
 const ItemTypes = {
   FIELD: "FIELD",
@@ -147,9 +145,14 @@ const FeedbackForm = () => {
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
-        <FaRegComments style={{ fontSize: "20px", marginRight: "10px" }} />
+        <img
+          src={TextAreaIcon}
+          alt="Textarea"
+          style={{ width: "20px", marginRight: "10px" }}
+        />
         <span>Textarea</span>
         <FaPlus
+          className="blue-icon"
           onClick={() => handleAddField("textarea", "Provide your comment")}
           style={{ cursor: "pointer", marginLeft: "92px" }}
         />
@@ -157,9 +160,14 @@ const FeedbackForm = () => {
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
-        <FaVoteYea style={{ fontSize: "20px", marginRight: "10px" }} />
+        <img
+          src={NumericalIcon}
+          alt="Numeric Rating"
+          style={{ width: "20px", marginRight: "10px" }}
+        />
         <span>Numeric Rating</span>
         <FaPlus
+          className="blue-icon"
           onClick={() => handleAddField("numeric-rating", "Numeric Rating")}
           style={{ cursor: "pointer", marginLeft: "40px" }}
         />
@@ -167,9 +175,14 @@ const FeedbackForm = () => {
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
-        <FaStar style={{ fontSize: "20px", marginRight: "10px" }} />
+        <img
+          src={StarIcon}
+          alt="Star Rating"
+          style={{ width: "20px", marginRight: "10px" }}
+        />
         <span>Star Rating</span>
         <FaPlus
+          className="blue-icon"
           onClick={() => handleAddField("star-rating", "Star Rating")}
           style={{ cursor: "pointer", marginLeft: "73px" }}
         />
@@ -177,19 +190,46 @@ const FeedbackForm = () => {
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
-        <FaRegSmile style={{ fontSize: "20px", marginRight: "10px" }} />
+        <img
+          src={SmileyIcon}
+          alt="Smiley Rating"
+          style={{ width: "20px", marginRight: "10px" }}
+        />
         <span>Smiley Rating</span>
         <FaPlus
+          className="blue-icon"
           onClick={() => handleAddField("smiley-rating", "Smiley Rating")}
           style={{ cursor: "pointer", marginLeft: "53px" }}
         />
       </div>
+
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
-        <FaListUl style={{ fontSize: "20px", marginRight: "10px" }} />
+        <img
+          src={InputIcon}
+          alt="Single Line Input"
+          style={{ width: "20px", marginRight: "10px" }}
+        />
+        <span>Single Line Input</span>
+        <FaPlus
+          className="blue-icon"
+          onClick={() => handleAddField("single-line", "Single Line Input")}
+          style={{ cursor: "pointer", marginLeft: "32px" }}
+        />
+      </div>
+
+      <div
+        style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
+      >
+        <img
+          src={RadioIcon}
+          alt="Radio Buttons"
+          style={{ width: "20px", marginRight: "10px" }}
+        />
         <span>Radio Buttons</span>
         <FaPlus
+          className="blue-icon"
           onClick={() => handleAddField("radio-buttons", "Radio Buttons")}
           style={{ cursor: "pointer", marginLeft: "50px" }}
         />
@@ -197,21 +237,16 @@ const FeedbackForm = () => {
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
-        <FaListUl style={{ fontSize: "20px", marginRight: "10px" }} />
+        <img
+          src={CategoryIcon}
+          alt="Categories"
+          style={{ width: "20px", marginRight: "10px" }}
+        />
         <span>Categories</span>
         <FaPlus
+          className="blue-icon"
           onClick={() => handleAddField("categories", "Categories")}
           style={{ cursor: "pointer", marginLeft: "75px" }}
-        />
-      </div>
-      <div
-        style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
-      >
-        <FaRegComments style={{ fontSize: "20px", marginRight: "10px" }} />
-        <span>Single Line Input</span>
-        <FaPlus
-          onClick={() => handleAddField("single-line", "Single Line Input")}
-          style={{ cursor: "pointer", marginLeft: "32px" }}
         />
       </div>
     </div>
