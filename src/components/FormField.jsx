@@ -13,7 +13,7 @@ import RadioIcon from "../assets/radio_icon.png";
 import SmileyIcon from "../assets/smiley_icon.png";
 import StarIcon from "../assets/star_icon.png";
 import TextAreaIcon from "../assets/textarea_icon.png";
-import { FaTrash, FaEdit, FaPlus } from "react-icons/fa"; // Importing icons from react-icons
+import { FaTrash, FaEdit, FaPlus, FaArrowLeft } from "react-icons/fa";
 
 const ItemTypes = {
   FIELD: "FIELD",
@@ -21,6 +21,9 @@ const ItemTypes = {
 
 const FeedbackForm = () => {
   const [fields, setFields] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [currentFieldType, setCurrentFieldType] = useState("");
+  const [currentLabel, setCurrentLabel] = useState("");
 
   const moveField = (dragIndex, hoverIndex) => {
     const updatedFields = [...fields];
@@ -42,6 +45,27 @@ const FeedbackForm = () => {
       );
       setFields(updatedFields);
     }
+  };
+
+  const handleAddField = (fieldType) => {
+    setCurrentFieldType(fieldType);
+    setShowModal(true);
+  };
+
+  const saveField = () => {
+    setFields([
+      ...fields,
+      { type: currentFieldType, label: currentLabel, value: "" },
+    ]);
+    setCurrentFieldType("");
+    setCurrentLabel("");
+    setShowModal(false);
+  };
+
+  const cancelField = () => {
+    setCurrentFieldType("");
+    setCurrentLabel("");
+    setShowModal(false);
   };
 
   const Field = ({ index, id, type, label, value, onChange }) => {
@@ -136,10 +160,6 @@ const FeedbackForm = () => {
     ));
   };
 
-  const handleAddField = (fieldType, label) => {
-    setFields([...fields, { type: fieldType, label, value: "" }]);
-  };
-
   const renderFieldOptions = () => (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div
@@ -153,7 +173,7 @@ const FeedbackForm = () => {
         <span>Textarea</span>
         <FaPlus
           className="blue-icon"
-          onClick={() => handleAddField("textarea", "Provide your comment")}
+          onClick={() => handleAddField("textarea")}
           style={{ cursor: "pointer", marginLeft: "92px" }}
         />
       </div>
@@ -168,7 +188,7 @@ const FeedbackForm = () => {
         <span>Numeric Rating</span>
         <FaPlus
           className="blue-icon"
-          onClick={() => handleAddField("numeric-rating", "Numeric Rating")}
+          onClick={() => handleAddField("numeric-rating")}
           style={{ cursor: "pointer", marginLeft: "40px" }}
         />
       </div>
@@ -183,7 +203,7 @@ const FeedbackForm = () => {
         <span>Star Rating</span>
         <FaPlus
           className="blue-icon"
-          onClick={() => handleAddField("star-rating", "Star Rating")}
+          onClick={() => handleAddField("star-rating")}
           style={{ cursor: "pointer", marginLeft: "73px" }}
         />
       </div>
@@ -198,7 +218,7 @@ const FeedbackForm = () => {
         <span>Smiley Rating</span>
         <FaPlus
           className="blue-icon"
-          onClick={() => handleAddField("smiley-rating", "Smiley Rating")}
+          onClick={() => handleAddField("smiley-rating")}
           style={{ cursor: "pointer", marginLeft: "53px" }}
         />
       </div>
@@ -214,7 +234,7 @@ const FeedbackForm = () => {
         <span>Single Line Input</span>
         <FaPlus
           className="blue-icon"
-          onClick={() => handleAddField("single-line", "Single Line Input")}
+          onClick={() => handleAddField("single-line")}
           style={{ cursor: "pointer", marginLeft: "32px" }}
         />
       </div>
@@ -230,7 +250,7 @@ const FeedbackForm = () => {
         <span>Radio Buttons</span>
         <FaPlus
           className="blue-icon"
-          onClick={() => handleAddField("radio-buttons", "Radio Buttons")}
+          onClick={() => handleAddField("radio-buttons")}
           style={{ cursor: "pointer", marginLeft: "50px" }}
         />
       </div>
@@ -245,7 +265,7 @@ const FeedbackForm = () => {
         <span>Categories</span>
         <FaPlus
           className="blue-icon"
-          onClick={() => handleAddField("categories", "Categories")}
+          onClick={() => handleAddField("categories")}
           style={{ cursor: "pointer", marginLeft: "75px" }}
         />
       </div>
@@ -254,12 +274,60 @@ const FeedbackForm = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="feedback-form">
-        <div className="left-block" style={{ width: "60%", float: "left" }}>
+      <div className="feedback-form" style={{ display: "flex" }}>
+        <div className="left-block" style={{ width: "60%" }}>
           {renderFields()}
         </div>
-        <div className="right-block" style={{ width: "35%", float: "right" }}>
-          {renderFieldOptions()}
+        <div
+          className="right-block"
+          style={{ width: "40%", position: "relative" }}
+        >
+          {showModal && (
+            <div
+              className="modal"
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(0,0,0,0.5)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 1000,
+              }}
+            >
+              <div
+                className="modal-content"
+                style={{
+                  backgroundColor: "white",
+                  padding: "20px",
+                  borderRadius: "8px",
+                  width: "300px",
+                }}
+              >
+                <button
+                  className="back-button"
+                  onClick={() => setShowModal(false)}
+                >
+                  <FaArrowLeft /> Back to Fields
+                </button>
+                <input
+                  type="text"
+                  placeholder="Enter label"
+                  value={currentLabel}
+                  onChange={(e) => setCurrentLabel(e.target.value)}
+                  style={{ marginTop: "10px", width: "100%" }}
+                />
+                <div>
+                  <button onClick={saveField}>Save</button>
+                  <button onClick={cancelField}>Cancel</button>
+                </div>
+              </div>
+            </div>
+          )}
+          {!showModal && renderFieldOptions()}
         </div>
       </div>
     </DndProvider>
