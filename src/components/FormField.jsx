@@ -1,4 +1,3 @@
-// FeedbackForm.js
 import React, { useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -7,7 +6,16 @@ import RatingReview from "./RatingReview";
 import SmileyRating from "./SmileyRating";
 import RadioButtons from "./RadioButtons";
 import Categories from "./Categories";
-import { FaTrash, FaEdit } from "react-icons/fa"; // Importing icons from react-icons
+import {
+  FaTrash,
+  FaEdit,
+  FaStar,
+  FaRegSmile,
+  FaVoteYea,
+  FaListUl,
+  FaRegComments,
+  FaPlus,
+} from "react-icons/fa"; // Importing icons from react-icons
 
 const ItemTypes = {
   FIELD: "FIELD",
@@ -29,16 +37,16 @@ const FeedbackForm = () => {
   };
 
   const editField = (index) => {
-    const newLabel = prompt("Enter new label:", fields[index].label);
-    if (newLabel) {
+    const newValue = prompt("Enter new value:", fields[index].label);
+    if (newValue) {
       const updatedFields = fields.map((field, i) =>
-        i === index ? { ...field, label: newLabel } : field
+        i === index ? { ...field, label: newValue } : field
       );
       setFields(updatedFields);
     }
   };
 
-  const Field = ({ index, id, type, label }) => {
+  const Field = ({ index, id, type, label, value, onChange }) => {
     const [, ref] = useDrop({
       accept: ItemTypes.FIELD,
       hover: (item) => {
@@ -69,13 +77,31 @@ const FeedbackForm = () => {
           cursor: "move",
         }}
       >
-        {type === "numeric-rating" && <NumericRating />}
-        {type === "star-rating" && <RatingReview />}
-        {type === "smiley-rating" && <SmileyRating />}
-        {type === "radio-buttons" && <RadioButtons />}
-        {type === "categories" && <Categories />}
-        {type === "textarea" && <textarea />}
-        {type === "single-line" && <input type="text" />}
+        {type === "numeric-rating" && (
+          <NumericRating value={value} onChange={onChange} />
+        )}
+        {type === "star-rating" && (
+          <RatingReview value={value} onChange={onChange} />
+        )}
+        {type === "smiley-rating" && (
+          <SmileyRating value={value} onChange={onChange} />
+        )}
+        {type === "radio-buttons" && (
+          <RadioButtons value={value} onChange={onChange} />
+        )}
+        {type === "categories" && (
+          <Categories value={value} onChange={onChange} />
+        )}
+        {type === "textarea" && (
+          <textarea value={value} onChange={(e) => onChange(e.target.value)} />
+        )}
+        {type === "single-line" && (
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+          />
+        )}
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <span>{label}</span>
           <div>
@@ -101,51 +127,105 @@ const FeedbackForm = () => {
         id={field.type + index}
         type={field.type}
         label={field.label}
+        value={field.value}
+        onChange={(newValue) => {
+          const updatedFields = fields.map((f, i) =>
+            i === index ? { ...f, value: newValue } : f
+          );
+          setFields(updatedFields);
+        }}
       />
     ));
   };
 
   const handleAddField = (fieldType, label) => {
-    setFields([...fields, { type: fieldType, label }]);
+    setFields([...fields, { type: fieldType, label, value: "" }]);
   };
 
   const renderFieldOptions = () => (
-    <div>
-      <button
-        onClick={() => handleAddField("textarea", "Provide your comment")}
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <div
+        style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
-        Add Textarea
-      </button>
-      <button
-        onClick={() => handleAddField("numeric-rating", "Numeric Rating")}
+        <FaRegComments style={{ fontSize: "20px", marginRight: "10px" }} />
+        <span>Textarea</span>
+        <FaPlus
+          onClick={() => handleAddField("textarea", "Provide your comment")}
+          style={{ cursor: "pointer", marginLeft: "92px" }}
+        />
+      </div>
+      <div
+        style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
-        Add Numeric Rating
-      </button>
-      <button onClick={() => handleAddField("star-rating", "Star Rating")}>
-        Add Star Rating
-      </button>
-      <button onClick={() => handleAddField("smiley-rating", "Smiley Rating")}>
-        Add Smiley Rating
-      </button>
-      <button onClick={() => handleAddField("radio-buttons", "Radio Buttons")}>
-        Add Radio Buttons
-      </button>
-      <button onClick={() => handleAddField("categories", "Categories")}>
-        Add Categories
-      </button>
-      <button
-        onClick={() => handleAddField("single-line", "Single Line Input")}
+        <FaVoteYea style={{ fontSize: "20px", marginRight: "10px" }} />
+        <span>Numeric Rating</span>
+        <FaPlus
+          onClick={() => handleAddField("numeric-rating", "Numeric Rating")}
+          style={{ cursor: "pointer", marginLeft: "40px" }}
+        />
+      </div>
+      <div
+        style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
-        Add Single Line Input
-      </button>
+        <FaStar style={{ fontSize: "20px", marginRight: "10px" }} />
+        <span>Star Rating</span>
+        <FaPlus
+          onClick={() => handleAddField("star-rating", "Star Rating")}
+          style={{ cursor: "pointer", marginLeft: "73px" }}
+        />
+      </div>
+      <div
+        style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
+      >
+        <FaRegSmile style={{ fontSize: "20px", marginRight: "10px" }} />
+        <span>Smiley Rating</span>
+        <FaPlus
+          onClick={() => handleAddField("smiley-rating", "Smiley Rating")}
+          style={{ cursor: "pointer", marginLeft: "53px" }}
+        />
+      </div>
+      <div
+        style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
+      >
+        <FaListUl style={{ fontSize: "20px", marginRight: "10px" }} />
+        <span>Radio Buttons</span>
+        <FaPlus
+          onClick={() => handleAddField("radio-buttons", "Radio Buttons")}
+          style={{ cursor: "pointer", marginLeft: "50px" }}
+        />
+      </div>
+      <div
+        style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
+      >
+        <FaListUl style={{ fontSize: "20px", marginRight: "10px" }} />
+        <span>Categories</span>
+        <FaPlus
+          onClick={() => handleAddField("categories", "Categories")}
+          style={{ cursor: "pointer", marginLeft: "75px" }}
+        />
+      </div>
+      <div
+        style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
+      >
+        <FaRegComments style={{ fontSize: "20px", marginRight: "10px" }} />
+        <span>Single Line Input</span>
+        <FaPlus
+          onClick={() => handleAddField("single-line", "Single Line Input")}
+          style={{ cursor: "pointer", marginLeft: "32px" }}
+        />
+      </div>
     </div>
   );
 
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="feedback-form">
-        <div className="left-block">{renderFields()}</div>
-        <div className="right-block">{renderFieldOptions()}</div>
+        <div className="left-block" style={{ width: "60%", float: "left" }}>
+          {renderFields()}
+        </div>
+        <div className="right-block" style={{ width: "35%", float: "right" }}>
+          {renderFieldOptions()}
+        </div>
       </div>
     </DndProvider>
   );

@@ -28,21 +28,19 @@ code {
 
 .smiley-rating {
   display: flex;
-  justify-content: center;
-  gap: 10px;
+  justify-content: start;
+  gap: 15px;
+  align-items: center;
 }
 
 .smiley {
-  font-size: 30px;
+  font-size: 24px;
   cursor: pointer;
-  padding: 10px;
-  border-radius: 50%;
-  transition: background-color 0.3s, color 0.3s;
+  transition: color 0.3s;
 }
 
 .smiley.selected {
-  background-color: blue;
-  color: white;
+  color: gold;
 }
 
 .feedback-form input[type="text"] {
