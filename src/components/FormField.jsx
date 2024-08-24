@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import DraggableField from "./DraggableField";
 import NumericRating from "./NumericRating";
 import RatingReview from "./RatingReview";
 import SmileyRating from "./SmileyRating";
 import RadioButtons from "./RadioButtons";
 import Categories from "./Categories";
+import { FaTrash, FaEdit } from "react-icons/fa"; // Importing icons from react-icons
 
 const ItemTypes = {
   FIELD: "FIELD",
@@ -21,6 +21,21 @@ const FeedbackForm = () => {
     const [removed] = updatedFields.splice(dragIndex, 1);
     updatedFields.splice(hoverIndex, 0, removed);
     setFields(updatedFields);
+  };
+
+  const deleteField = (index) => {
+    const updatedFields = fields.filter((_, i) => i !== index);
+    setFields(updatedFields);
+  };
+
+  const editField = (index) => {
+    const newLabel = prompt("Enter new label:", fields[index].label);
+    if (newLabel) {
+      const updatedFields = fields.map((field, i) =>
+        i === index ? { ...field, label: newLabel } : field
+      );
+      setFields(updatedFields);
+    }
   };
 
   const Field = ({ index, id, type, label }) => {
@@ -60,7 +75,20 @@ const FeedbackForm = () => {
         {type === "radio-buttons" && <RadioButtons />}
         {type === "categories" && <Categories />}
         {type === "textarea" && <textarea />}
-        {label}
+        {type === "single-line" && <input type="text" />}
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <span>{label}</span>
+          <div>
+            <FaEdit
+              onClick={() => editField(index)}
+              style={{ cursor: "pointer", marginRight: "10px" }}
+            />
+            <FaTrash
+              onClick={() => deleteField(index)}
+              style={{ cursor: "pointer" }}
+            />
+          </div>
+        </div>
       </div>
     );
   };
@@ -104,6 +132,11 @@ const FeedbackForm = () => {
       </button>
       <button onClick={() => handleAddField("categories", "Categories")}>
         Add Categories
+      </button>
+      <button
+        onClick={() => handleAddField("single-line", "Single Line Input")}
+      >
+        Add Single Line Input
       </button>
     </div>
   );

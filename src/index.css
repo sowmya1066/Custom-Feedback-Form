@@ -44,3 +44,10 @@ code {
   background-color: blue;
   color: white;
 }
+
+.feedback-form input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+  box-sizing: border-box;
+}
