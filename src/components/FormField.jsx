@@ -19,7 +19,7 @@ const ItemTypes = {
   FIELD: "FIELD",
 };
 
-const FeedbackForm = () => {
+const FeedbackForm = ({ formName, onEditFormName }) => {
   const [fields, setFields] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentFieldType, setCurrentFieldType] = useState("");
@@ -48,11 +48,19 @@ const FeedbackForm = () => {
   };
 
   const handleAddField = (fieldType) => {
+    if (fields.length >= 7) {
+      alert("Cannot add more than 7 fields.");
+      return;
+    }
     setCurrentFieldType(fieldType);
     setShowModal(true);
   };
 
   const saveField = () => {
+    if (fields.length === 0 && currentLabel.trim() === "") {
+      alert("The form must have at least one field.");
+      return;
+    }
     setFields([
       ...fields,
       { type: currentFieldType, label: currentLabel, value: "" },
@@ -222,7 +230,6 @@ const FeedbackForm = () => {
           style={{ cursor: "pointer", marginLeft: "53px" }}
         />
       </div>
-
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
@@ -238,7 +245,6 @@ const FeedbackForm = () => {
           style={{ cursor: "pointer", marginLeft: "32px" }}
         />
       </div>
-
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
       >
@@ -266,16 +272,39 @@ const FeedbackForm = () => {
         <FaPlus
           className="blue-icon"
           onClick={() => handleAddField("categories")}
-          style={{ cursor: "pointer", marginLeft: "75px" }}
+          style={{ cursor: "pointer", marginLeft: "72px" }}
         />
       </div>
     </div>
   );
 
+  const editFormName = () => {
+    const newName = prompt("Enter new form name:", formName);
+    if (newName) {
+      onEditFormName(newName);
+    }
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="feedback-form" style={{ display: "flex" }}>
         <div className="left-block" style={{ width: "60%" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "10px",
+              borderBottom: "1px solid gray",
+              paddingBottom: "10px",
+            }}
+          >
+            <h2>{formName}</h2>
+            <FaEdit
+              onClick={editFormName}
+              style={{ cursor: "pointer", marginLeft: "10px" }}
+            />
+          </div>
           {renderFields()}
         </div>
         <div
